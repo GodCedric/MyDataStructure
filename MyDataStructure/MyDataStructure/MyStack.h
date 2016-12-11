@@ -30,6 +30,8 @@ bool MyStack<T>::empty(){
 
 template<class T>
 T MyStack<T>::push(T x){
+	if(top == &arr[n-1])
+		return 0;    //越上界返回0
 	if(top == NULL){
 		top = arr;
 		*top = x;
@@ -43,7 +45,7 @@ T MyStack<T>::push(T x){
 template<class T>
 T MyStack<T>::pop(){
 	if(top == NULL)
-		return 0;
+		return 0;   //越下界返回0
 	if(top == &arr[0]){
 		top = NULL;
 		return arr[0];

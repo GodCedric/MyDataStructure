@@ -74,6 +74,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="MyQueue.h" />
     <ClInclude Include="MyStack.h" />
   </ItemGroup>
   <ItemGroup>
