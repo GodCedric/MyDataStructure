@@ -50,7 +50,7 @@ T MyQueue<T>::dequeue(){
 		return 0;   //越下界返回0
 	if(head == &arr[n-1]){
 		T temp = *head;
-		head == &arr[0];
+		head = &arr[0];
 		return temp;
 	}else{
 		T temp = *head;
