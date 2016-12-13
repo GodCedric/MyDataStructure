@@ -24,6 +24,9 @@
     <ClInclude Include="MyList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MyBinarySearchTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyDataStructure.cpp">

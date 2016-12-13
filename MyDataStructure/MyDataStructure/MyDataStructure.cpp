@@ -2,6 +2,7 @@
 #include"MyStack.h"
 #include"MyQueue.h"
 #include"MyList.h"
+#include"MyBinarySearchTree.h"
 using namespace std;
 
 int main(){
@@ -51,6 +52,37 @@ int main(){
 	cout<<"清空链表： ";
 	l.clear();
 	l.visit();
+
+	//二叉搜索树
+	cout<<"二叉搜索树：";
+	MyBinarySearchTree<int> MyTree;
+	MyTree.insert(6);
+	MyTree.insert(5);
+	MyTree.insert(2);
+	MyTree.insert(7);
+	MyTree.insert(5);
+	MyTree.insert(8);
+	cout<<"打印树：";
+	MyTree.print();
+	cout<<"前序遍历：";
+	MyTree.preOrder();
+	cout<<"中序遍历：";
+	MyTree.inOrder();
+	cout<<"后序遍历：";
+	MyTree.postOrder();
+	cout<<"寻找等于7的结点：";
+	TreeNode<int>* tempNode = MyTree.search(7);
+	cout<<tempNode->data<<endl;
+	cout<<"该结点的前驱：";
+	TreeNode<int>* pre = MyTree.predecessor(tempNode);
+	cout<<pre->data<<endl;
+	cout<<"该结点的后继：";
+	TreeNode<int>* su = MyTree.sucessor(tempNode);
+	cout<<su->data<<endl;
+	cout<<"输出最大值：";
+	cout<<MyTree.maximumValue()<<endl;
+	cout<<"输出最小值：";
+	cout<<MyTree.minimumValue()<<endl;
 
 	return 0;
 }
