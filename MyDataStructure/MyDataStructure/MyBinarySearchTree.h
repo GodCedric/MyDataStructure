@@ -30,6 +30,7 @@ public:
 	T maximumValue();							 //寻找最小值
 	TreeNode<T>* predecessor(TreeNode<T>* x);    //前驱
 	TreeNode<T>* sucessor(TreeNode<T>* x);       //后继
+	void remove(TreeNode<T>* z);				 //删除结点
 	void clear();								 //清空树
 
 private:
@@ -38,6 +39,7 @@ private:
 	//重载函数，类内部使用，对链表、树这类结构采用二级指针或一级指针的引用操作
 	//public里面仅定义外部接口，内部处理均由private里重载的函数进行
 	void insert(TreeNode<T>*& tree,TreeNode<T>* z);
+	void print(TreeNode<T>*& tree) const;
 	TreeNode<T>* search(TreeNode<T>*& tree,T val) const;
 	void preOrder(TreeNode<T>*& tree) const;
 	void inOrder(TreeNode<T>*& tree) const;
@@ -46,8 +48,8 @@ private:
 	TreeNode<T>* maximumNode(TreeNode<T>*& tree) const;
 	void clear(TreeNode<T>*& tree);
 
-	void print(TreeNode<T>*& tree) const;
-	TreeNode<T>* remove(TreeNode<T>*& tree,TreeNode<T>* z);
+	void transplant(TreeNode<T>*& tree,TreeNode<T>*& u,TreeNode<T>*& v);
+	void remove(TreeNode<T>*& tree,TreeNode<T>* z);
 };
 
 //前序遍历
@@ -133,11 +135,11 @@ void MyBinarySearchTree<T>::print(TreeNode<T>*& tree) const{
 	if(tree){
 		cout<<"结点 "<<tree->data<<":";
 		if(tree->left)
-			cout<<"左结点为 "<<tree->left->data<<"  ";
+			cout<<"左结点为"<<tree->left->data<<"  ";
 		else
 			cout<<"无左结点 ";
 		if(tree->right)
-			cout<<"右结点为 "<<tree->right->data<<"  ";
+			cout<<"右结点为"<<tree->right->data<<"  ";
 		else
 			cout<<"无右结点 ";
 	    cout<<endl;
@@ -239,5 +241,72 @@ TreeNode<T>* MyBinarySearchTree<T>::sucessor(TreeNode<T>* x){
 	}
 	return temp;
 }
+
+//删除结点子过程
+template<class T>
+void MyBinarySearchTree<T>::transplant(TreeNode<T>*& tree,TreeNode<T>*& u,TreeNode<T>*& v){
+	if(tree == u)
+		tree = v;
+	else if(u == u->p->left)
+		u->p->left = v;
+	else
+		u->p->right = v;
+	if(v != NULL)
+		v->p = u->p;        //没有释放u的空间
+}
+
+//删除结点
+template<class T>
+void MyBinarySearchTree<T>::remove(TreeNode<T>*& tree,TreeNode<T>* z){
+	TreeNode<T>* y;
+	if(z->left == NULL)
+		transplant(tree,z,z->right);
+	else if(z->right == NULL)
+		transplant(tree,z,z->right);
+	else{
+		y = minimumNode(z->right);
+		if(y->p == z){
+			transplant(tree,z,y);
+			y->left = z->left;
+			z->left->p = y;
+		}else{
+			transplant(tree,y,y->right);
+			y->right = z->right;
+			y->right->p = y;
+		}
+	}
+	delete z;
+}
+
+template<class T>
+void MyBinarySearchTree<T>::remove(TreeNode<T>* z){
+	remove(Root,z);
+}
+
+//清空树
+template<class T>
+void MyBinarySearchTree<T>::clear(TreeNode<T>*& tree){
+	if(tree->left != NULL){
+		clear(tree->left);
+	}
+	if(tree->right != NULL){
+		clear(tree->right);
+	}
+	if(tree->left==NULL && tree->right==NULL){
+		delete tree;
+		tree = NULL;           //这里必须得加一行设成NULL，因为如果只释放空间不置NULL的话，其父节点的孩子指针将不会指向NULL，也就不会递归回去继续删除。
+	}
+}
+
+template<class T>
+void MyBinarySearchTree<T>::clear(){
+	clear(Root);
+	if(Root == NULL)
+		cout<<"已清空"<<endl;
+	else
+		cout<<"清空失败"<<endl;
+}
+
+
 
 #endif
