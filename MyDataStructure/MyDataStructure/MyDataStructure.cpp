@@ -3,6 +3,7 @@
 #include"MyQueue.h"
 #include"MyList.h"
 #include"MyBinarySearchTree.h"
+#include"MyRBTree.h"
 using namespace std;
 
 int main(){
@@ -88,6 +89,16 @@ int main(){
 	cout<<MyTree.minimumValue()<<endl;
 	cout<<"Çå¿ÕÊ÷£º";
 	MyTree.clear();
+
+	//ºìºÚÊ÷
+	cout<<"ºìºÚÊ÷£º"<<endl;
+	MyRBTree<int> RBTree1;
+	RBTree1.insert(6);
+	RBTree1.insert(5);
+	RBTree1.insert(2);
+	RBTree1.insert(7);
+	RBTree1.insert(5);
+	RBTree1.insert(8);
 
 	return 0;
 }
