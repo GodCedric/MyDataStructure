@@ -4,6 +4,8 @@
 #include"MyList.h"
 #include"MyBinarySearchTree.h"
 #include"MyRBTree.h"
+#include"MyLinkGraph.h"
+
 using namespace std;
 
 int main(){
