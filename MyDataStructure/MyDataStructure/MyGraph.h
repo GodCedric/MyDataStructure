@@ -25,6 +25,8 @@ public:
 	int NumofVertices()const{return numVertices;}   //返回顶点个数
 	int NumofEdges()const{return numEdges;}         //返回边条数
 	///////////纯虚函数
+	virtual int getVertexPos(VertexType vertex)=0;  //获取结点位置
+													//结点位置即为它在链表的下标
 	virtual VertexType getValue(int i)=0;           //返回结点i的值          
 	virtual EdgeType getWeight(int v1,int v2)=0;    //返回边权值
 	virtual int getFirstNeighbor(int v)=0;          //取结点v的第一个邻接点
@@ -33,11 +35,12 @@ public:
 	virtual bool inertEdge(int v1,int v2,EdgeType cost)=0;   //插入边
 	virtual bool removeVertex(int v)=0;             //删除结点
 	virtual bool removeEdge(int v1,int v2)=0;       //删除边(v1,v2)
-	virtual int getVertexPos(VertexType vertex)=0;  //获取结点位置
+	
 
-private:
+protected:
 	int numVertices;   //结点个数
 	int numEdges;      //边个数
+	int maxVertices;   //最大结点个数
 };
 
 #endif

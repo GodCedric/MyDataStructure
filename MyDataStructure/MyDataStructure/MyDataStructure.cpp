@@ -133,5 +133,35 @@ int main(){
 	RBTree1.clear();
 	cout<<endl;
 
+	//图
+	//////基于邻接链表的图
+	MyLinkGraph<char,int> g(30);
+	char ch1,ch2;
+	int weight;
+	g.inputGraph();
+	g.outputGraph();
+	cout<<"顶点数和边数："<<g.NumofVertices()<<" "<<g.NumofEdges()<<endl;
+	cout<<"查看第一个邻接顶点:";  
+    cin>>ch1;  
+    cout<<g.getValue(g.getFirstNeighbor(g.getVertexPos(ch1)))<<endl;  
+    cout<<"查看后一个邻接顶点:";  
+    cin>>ch1>>ch2;  
+    cout<<g.getValue(g.getNextNeighbor(g.getVertexPos(ch1),g.getVertexPos(ch2)))<<endl;
+	cout<<"插入顶点:";  
+    cin >>ch1;  
+    g.insertVertex(ch1);  //插入点  
+    cout<<"插入边："<<endl;  
+    cin >>ch1>>ch2>>weight;  
+	g.inertEdge(g.getVertexPos(ch1),g.getVertexPos(ch2),weight);//插入边
+	g.outputGraph();
+	cout<<"删除边：";  
+    cin >>ch1>>ch2;  
+    g.removeEdge(g.getVertexPos(ch1),g.getVertexPos(ch2)); //删除边  
+  
+    cout<<"删除点：";  
+    cin>>ch1;  
+    g.removeVertex(g.getVertexPos(ch1));  
+    g.outputGraph(); 
+
 	return 0;
 }
