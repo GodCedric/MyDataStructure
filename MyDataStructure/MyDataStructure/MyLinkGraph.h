@@ -1,7 +1,7 @@
 #ifndef __MYLINKGRAPH__H__
 #define __MYLINKGRAPH__H__
 
-/*********»ùÓÚÁÚ½ÓÁ´±íµÄÅÉÉúÍ¼Àà*********/
+/*********»ùÓÚÁÚ½ÓÁ´±íµÄÍ¼Àà*********/
 #include"MyGraph.h"
 
 //¶¨Òå±ß
@@ -41,8 +41,8 @@ public:
 
 	VertexType getValue(int i);            //»ñÈ¡½áµãÖµ
 	EdgeType getWeight(int v1,int v2);  // »ñÈ¡±ßµÄÈ¨ÖØ
-	int getFirstNeighbor(int v);          //È¡½áµãvµÄµÚÒ»¸öÁÚ½Óµã
-	int getNextNeighbor(int v,int w);     //È¡ÁÚ½Ó½áµãwµÄÏÂÒ»¸öÁÚ½Ó½áµã
+	//int getFirstNeighbor(int v);          //È¡½áµãvµÄµÚÒ»¸öÁÚ½Óµã
+	//int getNextNeighbor(int v,int w);     //È¡ÁÚ½Ó½áµãwµÄÏÂÒ»¸öÁÚ½Ó½áµã
 	bool insertVertex(const VertexType& vertex);   //²åÈë½áµã
 	bool inertEdge(int v1,int v2,EdgeType cost);   //²åÈë±ß
 	bool removeVertex(int v);             //É¾³ı½áµã
@@ -108,7 +108,7 @@ EdgeType MyLinkGraph<VertexType,EdgeType>::getWeight(int v1,int v2){
 	return 0;
 }
 
-//»ñÈ¡½áµãvµÄµÚÒ»¸öÁÚ½Óµã
+/*//»ñÈ¡½áµãvµÄµÚÒ»¸öÁÚ½Óµã
 template<typename VertexType,typename EdgeType> 
 int MyLinkGraph<VertexType,EdgeType>::getFirstNeighbor(int v){
 	if(v != -1){
@@ -131,7 +131,7 @@ int MyLinkGraph<VertexType,EdgeType>::getNextNeighbor(int v,int w){   //ÕâÀïwÒªÊ
 			return p->link->dest;
 	}
 	return -1;
-}
+}*/
 
 //²åÈë½áµã
 template<typename VertexType,typename EdgeType> 
@@ -209,6 +209,7 @@ bool MyLinkGraph<VertexType,EdgeType>::removeVertex(int v){
 		numEdges--;
 	}
 	//±ßÉ¾ÍêÁË ÏÖÔÚÒª°ÑµãÉ¾µô£¬ÄÇÃ´µãµÄ¸öÊıÉÙÁËÒ»¸ö£¬¾Í°ÑÔ­À´·Å×îºóÃæµÄµã·Åµ½vµÄÎ»ÖÃ£¬²¢°ÑnumVertices--
+	numVertices--;
 	NodeTable[v].data = NodeTable[numVertices].data;
 	NodeTable[v].adj = NodeTable[numVertices].adj;
 	//ÕâÀïĞèÒª°ÑÕâ¸ö½áµãÒÔ±ßÏàÁ¬µÄÁíÒ»¸ö½áµãµÄÖµ¸üĞÂÒ»ÏÂ
@@ -225,7 +226,6 @@ bool MyLinkGraph<VertexType,EdgeType>::removeVertex(int v){
 		}
 		m = m->link;
 	}
-	numVertices--;
 	return true;
 }
 
@@ -257,7 +257,7 @@ bool MyLinkGraph<VertexType,EdgeType>::removeEdge(int v1,int v2){
 		Edge<VertexType,EdgeType> *v2p_before = NULL;   //Î¬»¤Ò»¸öÇ°Ö¸Õë
 		//ÏÈÕÒµ½ÕâÌõ±ß
 		while(v2p && v2p->dest!=v1){
-			v2p_before = v1p;
+			v2p_before = v2p;
 			v2p = v2p->link;
 		}
 		if(v2p){    //ÄÜÕÒµ½
@@ -297,6 +297,7 @@ void MyLinkGraph<VertexType,EdgeType>::inputGraph(){
 		int n = this->getVertexPos(v2);
 		if(m==-1 || n==-1){
 			cout<<"ÊäÈë²»·ûºÏÒªÇó£¬Çë¼ì²éÁ½½áµãÊÇ·ñ¾ù´æÔÚ"<<endl;
+			break;
 		}else{
 			if(this->inertEdge(m,n,weight)){
 				j++;

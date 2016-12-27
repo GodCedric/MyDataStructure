@@ -78,6 +78,7 @@
     <ClInclude Include="MyGraph.h" />
     <ClInclude Include="MyLinkGraph.h" />
     <ClInclude Include="MyList.h" />
+    <ClInclude Include="MyMatrixGraph.h" />
     <ClInclude Include="MyQueue.h" />
     <ClInclude Include="MyRBTree.h" />
     <ClInclude Include="MyStack.h" />

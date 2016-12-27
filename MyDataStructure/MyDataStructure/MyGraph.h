@@ -29,8 +29,8 @@ public:
 													//结点位置即为它在链表的下标
 	virtual VertexType getValue(int i)=0;           //返回结点i的值          
 	virtual EdgeType getWeight(int v1,int v2)=0;    //返回边权值
-	virtual int getFirstNeighbor(int v)=0;          //取结点v的第一个邻接点
-	virtual int getNextNeighbor(int v,int w)=0;     //取邻接结点w的下一个邻接结点
+	//virtual int getFirstNeighbor(int v)=0;          //取结点v的第一个邻接点
+	//virtual int getNextNeighbor(int v,int w)=0;     //取邻接结点w的下一个邻接结点
 	virtual bool insertVertex(const VertexType& vertex)=0;   //插入结点
 	virtual bool inertEdge(int v1,int v2,EdgeType cost)=0;   //插入边
 	virtual bool removeVertex(int v)=0;             //删除结点
