@@ -1,4 +1,5 @@
 #include<iostream>
+#include<vector>
 #include"MyStack.h"
 #include"MyQueue.h"
 #include"MyList.h"
@@ -6,6 +7,7 @@
 #include"MyRBTree.h"
 #include"MyLinkGraph.h"
 #include"MyMatrixGraph.h"
+#include"MyHeap.h"
 
 using namespace std;
 
@@ -159,7 +161,7 @@ int main(){
     g.outputGraph(); */
 
 	//////基于矩阵的图
-	MyMatrixGraph<char,int> r(30);
+	/*MyMatrixGraph<char,int> r(30);
 	char ch3,ch4;
 	int weight2;
 	r.inputGraph();
@@ -178,7 +180,20 @@ int main(){
     cout<<"删除点：";  
     cin>>ch3;  
     r.removeVertex(r.getVertexPos(ch3));  
-    r.outputGraph();
+    r.outputGraph();*/
+
+	//堆
+	//////注意，这里的堆不是一个类，而是只提供了三个接口函数
+	//////分别为：建立堆Build_Max_Heap，维护堆Max_Heapify，和堆排序heap_sort
+	int A[] = {3,7,2,8,10,7,3,9,75,36,88,12,5,77,99,111,57,22,-2,-67};
+	vector<int> CC(A,A+20);
+	vector<int>::iterator first3=CC.begin();
+	vector<int>::iterator last3=CC.end();
+	heap_sort(first3,last3);
+	cout<<"堆排序结果"<<endl;
+	for(int i=0;i<CC.size();i++)
+		cout<<CC[i]<<"  ";
+	cout<<endl;
 
 	return 0;
 }
