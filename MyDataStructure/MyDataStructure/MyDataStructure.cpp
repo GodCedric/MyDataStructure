@@ -8,6 +8,7 @@
 #include"MyLinkGraph.h"
 #include"MyMatrixGraph.h"
 #include"MyHeap.h"
+#include"MyBTree.h"
 
 using namespace std;
 
@@ -195,5 +196,25 @@ int main(){
 		cout<<CC[i]<<"  ";
 	cout<<endl;
 
+	//BÊ÷
+	MyBTree<char> bt;
+	bt.insert('G');
+	bt.insert('M');
+	bt.insert('P');
+	bt.insert('X');
+	bt.insert('A');
+	bt.insert('C');
+	bt.insert('D');
+	bt.insert('E');
+	bt.insert('J');
+	bt.insert('K');
+	bt.insert('N');
+	bt.insert('O');
+	bt.insert('R');
+
+	if(bt.search('A'))
+		cout<<"ÕÒµ½ÁË£¡"<<endl;
+	
+	
 	return 0;
 }

@@ -75,6 +75,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="MyBinarySearchTree.h" />
+    <ClInclude Include="MyBTree.h" />
     <ClInclude Include="MyGraph.h" />
     <ClInclude Include="MyHeap.h" />
     <ClInclude Include="MyLinkGraph.h" />
