@@ -15,39 +15,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MyStack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MyQueue.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MyList.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MyBinarySearchTree.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MyRBTree.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MyGraph.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MyLinkGraph.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MyMatrixGraph.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MyHeap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MyBTree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MyDataStructure.cpp">
+    <ClCompile Include="test_for_queue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

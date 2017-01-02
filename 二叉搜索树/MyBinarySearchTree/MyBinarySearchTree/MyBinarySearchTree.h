@@ -9,6 +9,7 @@ struct TreeNode{
 	struct TreeNode* p;
 	struct TreeNode* left;
 	struct TreeNode* right;
+	TreeNode(){}
 	TreeNode(T data):data(data),p(NULL),left(NULL),right(NULL){}
 };
 

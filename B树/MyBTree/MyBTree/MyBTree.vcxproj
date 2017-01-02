@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{FB59B78C-142C-4F1C-844F-AC1679A73326}</ProjectGuid>
+    <ProjectGuid>{E010C633-4267-4BEC-9905-47A746750505}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>MyDataStructure</RootNamespace>
+    <RootNamespace>MyBTree</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -74,19 +74,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="MyBinarySearchTree.h" />
     <ClInclude Include="MyBTree.h" />
-    <ClInclude Include="MyGraph.h" />
-    <ClInclude Include="MyHeap.h" />
-    <ClInclude Include="MyLinkGraph.h" />
-    <ClInclude Include="MyList.h" />
-    <ClInclude Include="MyMatrixGraph.h" />
-    <ClInclude Include="MyQueue.h" />
-    <ClInclude Include="MyRBTree.h" />
-    <ClInclude Include="MyStack.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MyDataStructure.cpp" />
+    <ClCompile Include="test_for_BTree.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
