@@ -8,7 +8,8 @@ int main(){
 	//图
 	//////基于邻接链表的图
 	MyLinkGraph<char,int> g(30);
-	char ch1,ch2;
+	/////边的基本性质的验证
+	/*char ch1,ch2;
 	int weight;
 	g.inputGraph();
 	g.outputGraph();
@@ -27,9 +28,49 @@ int main(){
     cout<<"删除点：";  
     cin>>ch1;  
     g.removeVertex(g.getVertexPos(ch1));  
-    g.outputGraph(); 
+    g.outputGraph();*/ 
 
-	//////基于矩阵的图
+	/////基本图算法验证
+	const int m = 8;
+	char vertexs[m] = {'r','s','t','u','v','w','x','y'};
+	for(int i=0;i<m;i++){
+		g.insertVertex(vertexs[i]);
+	}
+	g.inertEdge(0,1,1);
+	g.inertEdge(0,4,1);
+	g.inertEdge(1,5,1);
+	g.inertEdge(5,2,1);
+	g.inertEdge(5,6,1);
+	g.inertEdge(2,6,1);
+	g.inertEdge(2,3,1);
+	g.inertEdge(3,6,1);
+	g.inertEdge(6,7,1);
+	g.inertEdge(3,7,1);
+	g.outputGraph();
+	//广度优先搜索
+	cout<<"广度优先搜索"<<endl;
+	g.BFS('s');
+	cout<<endl;
+
+	MyLinkGraph<char,int> g2(30);
+	const int m2 = 6;
+	char vertexs2[m2] = {'u','v','w','x','y','z'};
+	for(int i=0;i<m2;i++){
+		g2.insertVertex(vertexs2[i]);
+	}
+	g2.inertEdge(0,1,1);
+	g2.inertEdge(0,3,1);
+	g2.inertEdge(3,1,1);
+	g2.inertEdge(4,3,1);
+	g2.inertEdge(1,4,1);
+	g2.inertEdge(2,4,1);
+	g2.inertEdge(2,5,1);
+	g2.inertEdge(5,5,1);
+	g2.outputGraph();
+	cout<<"深度优先搜索"<<endl;
+	g2.DFS();
+
+	/*//////基于矩阵的图
 	MyMatrixGraph<char,int> r(30);
 	char ch3,ch4;
 	int weight2;
@@ -49,6 +90,6 @@ int main(){
     cout<<"删除点：";  
     cin>>ch3;  
     r.removeVertex(r.getVertexPos(ch3));  
-    r.outputGraph();
+    r.outputGraph();*/
 
 }

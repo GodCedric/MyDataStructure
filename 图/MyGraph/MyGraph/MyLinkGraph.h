@@ -3,6 +3,9 @@
 
 /*********基于邻接链表的图类*********/
 #include"MyGraph.h"
+#include<queue>
+
+enum Color{WHITE,GRAY,BLACK};
 
 //定义边
 template<typename VertexType,typename EdgeType> 
@@ -20,7 +23,15 @@ struct Edge{
 template<typename VertexType,typename EdgeType> 
 struct Vertex{
 	VertexType data;                //结点名
+	//用于搜索的属性
+	Color color;//颜色
+	int d;//路径长(其实时间)
+	int f;
+	Vertex* pi;//结点前驱
+
 	Edge<VertexType,EdgeType> *adj; //链表头指针
+
+	Vertex():color(WHITE),d(INT_MAX),f(0),pi(NULL),adj(NULL){}
 };
 
 //邻接链表表示的图
@@ -48,11 +59,15 @@ public:
 	bool removeVertex(int v);             //删除结点
 	bool removeEdge(int v1,int v2);       //删除边(v1,v2)
 	//成员函数
+	void BFS(VertexType sv);    //广度优先搜索
+	void DFS();                 //深度优先搜索
 	void inputGraph();
 	void outputGraph();
 	
 private:
 	Vertex<VertexType,EdgeType>* NodeTable;   //结点表 
+
+	void DFS_visit(Vertex<typename VertexType,typename EdgeType>& u);    //深度优先搜索辅助函数
 };
 
 //构造函数
@@ -332,6 +347,66 @@ void MyLinkGraph<VertexType,EdgeType>::outputGraph(){
 	}
 }
 
+//图的广度优先搜索
+template<typename VertexType,typename EdgeType> 
+void MyLinkGraph<VertexType,EdgeType>::BFS(VertexType sv){
+	int x = getVertexPos(sv);
+	Vertex<typename VertexType,typename EdgeType>& s = NodeTable[x];
+	s.color = GRAY;
+	s.d = 0;
+	s.pi = NULL;
+	queue<Vertex<typename VertexType,typename EdgeType>> Q;
+	Q.push(s);
+	while(!Q.empty()){
+		Vertex<typename VertexType,typename EdgeType> u = Q.front();
+		Q.pop();
+		Edge<typename VertexType,typename EdgeType>* uadj = u.adj;
+		while(uadj!=NULL){
+			Vertex<typename VertexType,typename EdgeType>& v = NodeTable[uadj->dest];
+			if(v.color == WHITE){
+				v.color = GRAY;
+				v.d = u.d + 1;
+				v.pi = &u;
+				Q.push(v);
+			}
+			uadj = uadj->link;
+		}
+		u.color = BLACK;
+		cout<<u.data<<"("<<u.d<<")"<<"  ";
+	}
+}
 
+//图的深度优先搜索
+template<typename VertexType,typename EdgeType> 
+void MyLinkGraph<VertexType,EdgeType>::DFS_visit(Vertex<typename VertexType,typename EdgeType>& u){
+	static int time = 0;
+	time = time + 1;
+	u.d = time;
+	u.color = GRAY;
+	Edge<typename VertexType,typename EdgeType>* uadj = u.adj;
+	while(uadj!=NULL){
+		Vertex<typename VertexType,typename EdgeType>& v = NodeTable[uadj->dest];
+		if(v.color == WHITE){
+			v.pi = &u;
+			DFS_visit(v);
+		}
+		uadj = uadj->link;
+	}
+	u.color = BLACK;
+	time = time + 1;
+	u.f = time;
+	cout<<u.data<<"("<<u.d<<"/"<<u.f<<")"<<"  ";
+}
+
+
+template<typename VertexType,typename EdgeType> 
+void MyLinkGraph<VertexType,EdgeType>::DFS(){
+	int num_Vertices = this->NumofVertices();
+	for(int i=0;i<num_Vertices;i++){
+		Vertex<typename VertexType,typename EdgeType>& u = NodeTable[i];
+		if(u.color == WHITE)
+			DFS_visit(u);
+	}
+}
 
 #endif
