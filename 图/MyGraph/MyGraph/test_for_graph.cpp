@@ -1,14 +1,17 @@
 #include<iostream>
-#include"MyLinkGraph.h"
-#include"MyMatrixGraph.h"
+#include"MyLinkDirectedGraph.h"
+#include"MyLinkUnDirectedGraph.h"
+#include"MyMatrixDirectedGraph.h"
+#include"MyMatrixUnDirectedGraph.h"
 
 using namespace std;
 
 int main(){
 	//图
-	//////基于邻接链表的图
-	MyLinkGraph<char,int> g(30);
-	/////边的基本性质的验证
+	//////基于邻接链表的无向图
+	cout<<"基于邻接链表的无向图"<<endl;
+	MyLinkUnDirectedGraph<char,int> g(30);
+	//无向图的基本性质的验证
 	/*char ch1,ch2;
 	int weight;
 	g.inputGraph();
@@ -30,7 +33,7 @@ int main(){
     g.removeVertex(g.getVertexPos(ch1));  
     g.outputGraph();*/ 
 
-	/////基本图算法验证
+	//基本图算法验证
 	const int m = 8;
 	char vertexs[m] = {'r','s','t','u','v','w','x','y'};
 	for(int i=0;i<m;i++){
@@ -52,7 +55,7 @@ int main(){
 	g.BFS('s');
 	cout<<endl;
 
-	MyLinkGraph<char,int> g2(30);
+	MyLinkUnDirectedGraph<char,int> g2(30);
 	const int m2 = 6;
 	char vertexs2[m2] = {'u','v','w','x','y','z'};
 	for(int i=0;i<m2;i++){
@@ -67,11 +70,34 @@ int main(){
 	g2.inertEdge(2,5,1);
 	g2.inertEdge(5,5,1);
 	g2.outputGraph();
+	//深度优先搜索
 	cout<<"深度优先搜索"<<endl;
 	g2.DFS();
 
-	/*//////基于矩阵的图
-	MyMatrixGraph<char,int> r(30);
+	
+	//////基于邻接链表的有向图
+	cout<<endl;
+	cout<<endl;
+	cout<<"基于邻接链表的有向图:"<<endl;
+	MyLinkDirectedGraph<char,int> g3(30);
+	const int m3 = 6;
+	for(int i=0;i<m3;i++){
+		g3.insertVertex(vertexs2[i]);
+	}
+	g3.inertEdge(0,1,1);
+	g3.inertEdge(0,3,1);
+	g3.inertEdge(3,1,1);
+	g3.inertEdge(4,3,1);
+	g3.inertEdge(1,4,1);
+	g3.inertEdge(2,4,1);
+	g3.inertEdge(2,5,1);
+	g3.inertEdge(5,5,1);
+	g3.outputGraph();
+
+
+
+	/*//////基于矩阵的有向图
+	MyMatrixDirectedGraph<char,int> r(30);
 	char ch3,ch4;
 	int weight2;
 	r.inputGraph();
@@ -91,5 +117,29 @@ int main(){
     cin>>ch3;  
     r.removeVertex(r.getVertexPos(ch3));  
     r.outputGraph();*/
+
+	//////基于矩阵的无向图
+	/*MyMatrixUnDirectedGraph<char,int> r(30);
+	char ch3,ch4;
+	int weight2;
+	r.inputGraph();
+	r.outputGraph();
+	cout<<"插入顶点:";  
+    cin >>ch3;  
+    r.insertVertex(ch3);  //插入点  
+    cout<<"插入边："<<endl;  
+    cin >>ch3>>ch4>>weight2;  
+	r.inertEdge(r.getVertexPos(ch3),r.getVertexPos(ch4),weight2);//插入边
+	r.outputGraph();
+	cout<<"删除边：";  
+    cin >>ch3>>ch4;  
+    r.removeEdge(r.getVertexPos(ch3),r.getVertexPos(ch4)); //删除边  
+  
+    cout<<"删除点：";  
+    cin>>ch3;  
+    r.removeVertex(r.getVertexPos(ch3));  
+    r.outputGraph();*/
+
+
 
 }

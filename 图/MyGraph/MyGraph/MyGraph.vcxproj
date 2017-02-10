@@ -75,8 +75,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="MyGraph.h" />
-    <ClInclude Include="MyLinkGraph.h" />
-    <ClInclude Include="MyMatrixGraph.h" />
+    <ClInclude Include="MyLinkDirectedGraph.h" />
+    <ClInclude Include="MyLinkUnDirectedGraph.h" />
+    <ClInclude Include="MyMatrixDirectedGraph.h" />
+    <ClInclude Include="MyMatrixUnDirectedGraph.h" />
+    <ClInclude Include="VertexandEdge.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="test_for_graph.cpp" />

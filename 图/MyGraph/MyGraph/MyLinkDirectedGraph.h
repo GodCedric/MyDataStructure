@@ -1,46 +1,19 @@
-#ifndef __MYLINKGRAPH__H__
-#define __MYLINKGRAPH__H__
+#ifndef __MYLINKDIRECTEDGRAPH__H__
+#define __MYLINKDIRECTEDGRAPH__H__
 
-/*********»ùÓÚÁÚ½ÓÁ´±íµÄÍ¼Àà*********/
+/*********»ùÓÚÁÚ½ÓÁ´±íµÄÓĞÏòÍ¼Àà*********/
 #include"MyGraph.h"
+#include"VertexandEdge.h"
 #include<queue>
 
-enum Color{WHITE,GRAY,BLACK};
-
-//¶¨Òå±ß
-template<typename VertexType,typename EdgeType> 
-struct Edge{
-	int dest;  //±ßµÄÁíÒ»¸ö½áµãÎ»ÖÃ
-	EdgeType cost;   //±ßµÄÈ¨Öµ
-	Edge<VertexType,EdgeType> *link;  //Ö¸Õë£¬Ö¸ÏòÏÂÒ»Ìõ±ß
-
-	Edge(){}    //Ä¬ÈÏ¹¹Ôìº¯Êı
-	Edge(int num,EdgeType weight):dest(num),cost(weight),link(NULL){}   //¹¹Ôìº¯Êı
-
-};
-
-//¶¨Òå½áµã
-template<typename VertexType,typename EdgeType> 
-struct Vertex{
-	VertexType data;                //½áµãÃû
-	//ÓÃÓÚËÑË÷µÄÊôĞÔ
-	Color color;//ÑÕÉ«
-	int d;//Â·¾¶³¤(ÆäÊµÊ±¼ä)
-	int f;
-	Vertex* pi;//½áµãÇ°Çı
-
-	Edge<VertexType,EdgeType> *adj; //Á´±íÍ·Ö¸Õë
-
-	Vertex():color(WHITE),d(INT_MAX),f(0),pi(NULL),adj(NULL){}
-};
 
 //ÁÚ½ÓÁ´±í±íÊ¾µÄÍ¼
 template<typename VertexType,typename EdgeType> 
-class MyLinkGraph:public MyGraph<VertexType,EdgeType>{
+class MyLinkDirectedGraph:public MyGraph<VertexType,EdgeType>{
 public:
 	//¹¹ÔìÎö¹¹
-	MyLinkGraph(int sz = DefaultVertices);
-	~MyLinkGraph();
+	MyLinkDirectedGraph(int sz = DefaultVertices);
+	~MyLinkDirectedGraph();
 	//»ùÀà´¿Ğéº¯ÊıÊµÀı»¯
 	int getVertexPos(VertexType vertex){    //½áµãµÄÎ»ÖÃÒÔËüÔÚ±íÖĞµÄÏÂ±êĞòºÅ¾ö¶¨
 		for(int i=0;i<numVertices;i++){
@@ -72,7 +45,7 @@ private:
 
 //¹¹Ôìº¯Êı
 template<typename VertexType,typename EdgeType> 
-MyLinkGraph<VertexType,EdgeType>::MyLinkGraph(int sz){
+MyLinkDirectedGraph<VertexType,EdgeType>::MyLinkDirectedGraph(int sz){
 	maxVertices = sz;
 	numVertices = 0;
 	numEdges = 0;
@@ -88,7 +61,7 @@ MyLinkGraph<VertexType,EdgeType>::MyLinkGraph(int sz){
 
 //Îö¹¹º¯Êı
 template<typename VertexType,typename EdgeType> 
-MyLinkGraph<VertexType,EdgeType>::~MyLinkGraph(){
+MyLinkDirectedGraph<VertexType,EdgeType>::~MyLinkDirectedGraph(){
 	//ÊÍ·ÅÁ´±í¿Õ¼ä
 	for(int i=0;i<maxVertices;i++){
 		Edge<VertexType,EdgeType>* p = NodeTable[i].adj;
@@ -103,7 +76,7 @@ MyLinkGraph<VertexType,EdgeType>::~MyLinkGraph(){
 
 //·µ»Ø½áµãiµÄÖµ
 template<typename VertexType,typename EdgeType>
-VertexType MyLinkGraph<VertexType,EdgeType>::getValue(int i){          //»ñÈ¡½áµãÖµ
+VertexType MyLinkDirectedGraph<VertexType,EdgeType>::getValue(int i){          //»ñÈ¡½áµãÖµ
 	return (i>=0 && i<numVertices)?NodeTable[i].data:0;
 }
 
@@ -111,7 +84,7 @@ VertexType MyLinkGraph<VertexType,EdgeType>::getValue(int i){          //»ñÈ¡½áµ
 //·µ»Ø±ßµÄÈ¨ÖØ
 ////v1£¬v2±íÊ¾½áµãÎ»ÖÃ£¬Èç¹ûÁ½¸ö½áµãÖ®¼ä´æÔÚ±ß£¬Ôò·µ»Ø¸Ã±ßµÄÈ¨ÖØ£¬·ñÔò·µ»Ø0
 template<typename VertexType,typename EdgeType> 
-EdgeType MyLinkGraph<VertexType,EdgeType>::getWeight(int v1,int v2){
+EdgeType MyLinkDirectedGraph<VertexType,EdgeType>::getWeight(int v1,int v2){
 	//Ç°ÌáÊÇ½áµã±ØĞë´æÔÚ
 	if(v1!=-1 && v2!=-1){
 		Edge<VertexType,EdgeType> *p = NodeTable[v1].adj;//È¡³ö½áµã¶ÔÓ¦µÄ±ßÁ´±íµÄÍ·Ö¸Õë
@@ -125,7 +98,7 @@ EdgeType MyLinkGraph<VertexType,EdgeType>::getWeight(int v1,int v2){
 
 /*//»ñÈ¡½áµãvµÄµÚÒ»¸öÁÚ½Óµã
 template<typename VertexType,typename EdgeType> 
-int MyLinkGraph<VertexType,EdgeType>::getFirstNeighbor(int v){
+int MyLinkDirectedGraph<VertexType,EdgeType>::getFirstNeighbor(int v){
 	if(v != -1){
 		Edge<typename VertexType,typename EdgeType> *p = NodeTable[v].adj;
 		if(p){
@@ -137,7 +110,7 @@ int MyLinkGraph<VertexType,EdgeType>::getFirstNeighbor(int v){
 
 //»ñÈ¡½áµãvµÄÁÚ½Ó½áµãwµÄÏÂÒ»¸öÁÚ½Óµã
 template<typename VertexType,typename EdgeType> 
-int MyLinkGraph<VertexType,EdgeType>::getNextNeighbor(int v,int w){   //ÕâÀïwÒªÊÇvµÄÒ»¸öÁÚ½Óµã
+int MyLinkDirectedGraph<VertexType,EdgeType>::getNextNeighbor(int v,int w){   //ÕâÀïwÒªÊÇvµÄÒ»¸öÁÚ½Óµã
 	if(v != -1){
 		Edge<typename VertexType,typename EdgeType> *p = NodeTable[v].adj;
 		while(p && p->dest!=w)    //ÏÈÕÒµ½w
@@ -150,7 +123,7 @@ int MyLinkGraph<VertexType,EdgeType>::getNextNeighbor(int v,int w){   //ÕâÀïwÒªÊ
 
 //²åÈë½áµã
 template<typename VertexType,typename EdgeType> 
-bool MyLinkGraph<VertexType,EdgeType>::insertVertex(const VertexType& vertex){    //ÊäÈëÖµÎª½áµãÃû
+bool MyLinkDirectedGraph<VertexType,EdgeType>::insertVertex(const VertexType& vertex){    //ÊäÈëÖµÎª½áµãÃû
 	if(numVertices == maxVertices)
 		return false;
 	NodeTable[numVertices].data = vertex;
@@ -160,7 +133,7 @@ bool MyLinkGraph<VertexType,EdgeType>::insertVertex(const VertexType& vertex){  
 
 //²åÈë±ß
 template<typename VertexType,typename EdgeType> 
-bool MyLinkGraph<VertexType,EdgeType>::inertEdge(int v1,int v2,EdgeType weight){
+bool MyLinkDirectedGraph<VertexType,EdgeType>::inertEdge(int v1,int v2,EdgeType weight){
 	//ÒªÇóÊäÈëµÄv1ºÍv2ºÏÀí
 	if(v1>=0 && v1<numVertices && v2>=0 && v2<numVertices){
 		//²éÕÒÕâ¸ö±ßÊÇ²»ÊÇÒÑ¾­´æÔÚÁË£¬Èç¹û´æÔÚ£¬Ôò·µ»Ø²åÈëÊ§°Ü
@@ -173,15 +146,10 @@ bool MyLinkGraph<VertexType,EdgeType>::inertEdge(int v1,int v2,EdgeType weight){
 		}
 		//Èç¹ûÊäÈëv1ºÍv2ºÏÀí£¬ÇÒ¸Ã±ß²»´æÔÚ£¬Ôò¿É²åÈë¸Ã±ßµ½v1½áµãÁÚ½Ó±íµÄ±íÍ·
 		Edge<VertexType,EdgeType> *v1p = new Edge<VertexType,EdgeType>; //²åÈëµ½½áµãv1µÄ±íÍ·
-		Edge<VertexType,EdgeType> *v2p = new Edge<VertexType,EdgeType>; //²åÈëµ½½áµãv2µÄ±íÍ·
 		v1p->dest = v2;
 		v1p->cost = weight;
 		v1p->link = NodeTable[v1].adj;  //°Ñv1½áµã±¾À´µÄÁÚ½Ó±í½Óµ½ĞÂ½¨µÄEdgeµÄlinkÉÏ
 		NodeTable[v1].adj = v1p;        //²¢°ÑĞÂ½¨µÄEdge·Åµ½v1½áµãÁÚ½Ó±íµÄ±íÍ·
-		v2p->dest = v1;
-		v2p->cost = weight;
-		v2p->link = NodeTable[v2].adj;  //°Ñv2½áµã±¾À´µÄÁÚ½Ó±í½Óµ½ĞÂ½¨µÄEdgeµÄlinkÉÏ
-		NodeTable[v2].adj = v2p;        //²¢°ÑĞÂ½¨µÄEdge·Åµ½v2½áµãÁÚ½Ó±íµÄ±íÍ·
 
 		numEdges++; //±ß¼Ó1
 		return true;
@@ -191,34 +159,15 @@ bool MyLinkGraph<VertexType,EdgeType>::inertEdge(int v1,int v2,EdgeType weight){
 
 //É¾³ı½áµã
 template<typename VertexType,typename EdgeType> 
-bool MyLinkGraph<VertexType,EdgeType>::removeVertex(int v){
+bool MyLinkDirectedGraph<VertexType,EdgeType>::removeVertex(int v){
 	//ÏÈÅĞ¶ÏÏÂ½áµãvÊÇ·ñºÏÀí
 	if(v<0 || v>=numVertices || numVertices==1)  //Ö»ÓĞ1¸ö½áµãÏÈ²»ÈÃÉ¾³ı
 		return false;
 	//É¾³ı½áµã£¬Ê×ÏÈÒª°ÑÓëÕâ¸ö½áµãÏà¹ØµÄ±ßÈ«É¾³ıµô
 	Edge<VertexType,EdgeType> *p;
-	Edge<VertexType,EdgeType> *q;
-	Edge<VertexType,EdgeType> *q_before;
-	int k;
+
 	while(NodeTable[v].adj){
-		//Ê×ÏÈÒªÕÒµ½ÓëÆäÏàÁ¬µÄ½áµã£¬°ÑÄÇ¸ö½áµãÉÏÏà¹ØÁªµÄ±ßÉ¾µô
 		p = NodeTable[v].adj;
-		k = p->dest;
-		q = NodeTable[k].adj;
-		q_before = NULL;  //Î¬»¤Ò»¸öq±ßµÄÇ°ÃæÒ»Ìõ±ßµÄÖ¸Õë
-		while(q && q->dest!=v){
-			q_before = q;
-			q = q->link;
-		}
-		if(q){
-			if(q_before == NULL) //ÉÏÃæµÄwhileÃ»½øĞĞ£¬ËµÃ÷q->dest==v
-				NodeTable[k].adj = q->link;
-			else
-				q_before->link = q->link;
-			delete q;
-		}
-		
-		//È»ºóĞèÒª°Ñ½áµãvÉÏÃæÕâÌõ±ßÒ²É¾µô
 		NodeTable[v].adj = p->link;
 		delete p;
 		numEdges--;
@@ -246,7 +195,7 @@ bool MyLinkGraph<VertexType,EdgeType>::removeVertex(int v){
 
 //É¾³ı±ß
 template<typename VertexType,typename EdgeType> 
-bool MyLinkGraph<VertexType,EdgeType>::removeEdge(int v1,int v2){
+bool MyLinkDirectedGraph<VertexType,EdgeType>::removeEdge(int v1,int v2){
 	//ÏÈÅĞ¶ÏÏÂÊäÈëÊÇ·ñºÏÀí
 	if(v1>=0 && v1<numVertices && v2>=0 && v2<numVertices){
 		//ÏÈ°Ñv1µÄ±ßÉ¾µô
@@ -267,21 +216,6 @@ bool MyLinkGraph<VertexType,EdgeType>::removeEdge(int v1,int v2){
  			return false;
 		}
 
-		//ÔÙ°Ñv2µÄ±ßÉ¾µô
-		Edge<VertexType,EdgeType> *v2p = NodeTable[v2].adj;
-		Edge<VertexType,EdgeType> *v2p_before = NULL;   //Î¬»¤Ò»¸öÇ°Ö¸Õë
-		//ÏÈÕÒµ½ÕâÌõ±ß
-		while(v2p && v2p->dest!=v1){
-			v2p_before = v2p;
-			v2p = v2p->link;
-		}
-		if(v2p){    //ÄÜÕÒµ½
-			if(v1p_before == NULL)
-				NodeTable[v2].adj = v2p->link;
-			else
-				v2p_before->link = v2p->link;
-			delete v2p;
-		}
 		numEdges--;
 		return true;
 	}
@@ -290,7 +224,7 @@ bool MyLinkGraph<VertexType,EdgeType>::removeEdge(int v1,int v2){
 
 //Í¼µÄÊäÈëÓë¹¹Ôì
 template<typename VertexType,typename EdgeType> 
-void MyLinkGraph<VertexType,EdgeType>::inputGraph(){
+void MyLinkDirectedGraph<VertexType,EdgeType>::inputGraph(){
 	int num_Vertices; // ½áµãÊı
 	int num_Edges;    //±ßÊı
 	cout<<"ÇëÒÀ´ÎÊäÈë½áµãÊıºÍ±ßÊ÷£º"<<endl;
@@ -323,7 +257,7 @@ void MyLinkGraph<VertexType,EdgeType>::inputGraph(){
 
 //Í¼µÄÊä³ö
 template<typename VertexType,typename EdgeType> 
-void MyLinkGraph<VertexType,EdgeType>::outputGraph(){
+void MyLinkDirectedGraph<VertexType,EdgeType>::outputGraph(){
 	int num_Vertices = this->NumofVertices(); // ½áµãÊı
 	int num_Edges = this->NumofEdges();    //±ßÊı
 	cout<<"¸ÃÍ¼µÄ½áµãÊıÄ¿Îª£º"<<num_Vertices<<" "<<"±ßµÄÊıÄ¿Îª£º"<<num_Edges<<endl;
@@ -336,7 +270,7 @@ void MyLinkGraph<VertexType,EdgeType>::outputGraph(){
 	int weight;
 	VertexType v1,v2;
 	for(int i=0;i<num_Vertices;i++){
-		for(int j=i+1;j<num_Vertices;j++){   //ÒòÎªÒ»Ìõ±ßÖ»Êä³öÒ»´Î£¬ËùÒÔÓÃÕâÖÖ·½·¨
+		for(int j=0;j<num_Vertices;j++){   //ÒòÎªÒ»Ìõ±ßÖ»Êä³öÒ»´Î£¬ËùÒÔÓÃÕâÖÖ·½·¨
 			weight = this->getWeight(i,j);
 			if(weight>0){
 				v1 = this->getValue(i);
@@ -349,7 +283,7 @@ void MyLinkGraph<VertexType,EdgeType>::outputGraph(){
 
 //Í¼µÄ¹ã¶ÈÓÅÏÈËÑË÷
 template<typename VertexType,typename EdgeType> 
-void MyLinkGraph<VertexType,EdgeType>::BFS(VertexType sv){
+void MyLinkDirectedGraph<VertexType,EdgeType>::BFS(VertexType sv){
 	int x = getVertexPos(sv);
 	Vertex<typename VertexType,typename EdgeType>& s = NodeTable[x];
 	s.color = GRAY;
@@ -378,7 +312,7 @@ void MyLinkGraph<VertexType,EdgeType>::BFS(VertexType sv){
 
 //Í¼µÄÉî¶ÈÓÅÏÈËÑË÷
 template<typename VertexType,typename EdgeType> 
-void MyLinkGraph<VertexType,EdgeType>::DFS_visit(Vertex<typename VertexType,typename EdgeType>& u){
+void MyLinkDirectedGraph<VertexType,EdgeType>::DFS_visit(Vertex<typename VertexType,typename EdgeType>& u){
 	static int time = 0;
 	time = time + 1;
 	u.d = time;
@@ -400,7 +334,7 @@ void MyLinkGraph<VertexType,EdgeType>::DFS_visit(Vertex<typename VertexType,type
 
 
 template<typename VertexType,typename EdgeType> 
-void MyLinkGraph<VertexType,EdgeType>::DFS(){
+void MyLinkDirectedGraph<VertexType,EdgeType>::DFS(){
 	int num_Vertices = this->NumofVertices();
 	for(int i=0;i<num_Vertices;i++){
 		Vertex<typename VertexType,typename EdgeType>& u = NodeTable[i];

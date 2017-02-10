@@ -18,10 +18,19 @@
     <ClInclude Include="MyGraph.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MyLinkGraph.h">
+    <ClInclude Include="MyLinkDirectedGraph.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MyMatrixGraph.h">
+    <ClInclude Include="VertexandEdge.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MyLinkUnDirectedGraph.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MyMatrixUnDirectedGraph.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MyMatrixDirectedGraph.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

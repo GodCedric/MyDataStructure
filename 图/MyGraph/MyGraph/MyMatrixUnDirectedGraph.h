@@ -1,15 +1,15 @@
-#ifndef __MYMATRIXGRAPH__H__
-#define __MYMATRIXGRAPH__H__
+#ifndef __MYMATRIXUNDIRECTEDGRAPH__H__
+#define __MYMATRIXUNDIRECTEDGRAPH__H__
 
-/*********基于矩阵的图类*********/
+/*********基于矩阵的无向图类*********/
 #include"MyGraph.h"
 
 template<typename VertexType,typename EdgeType> 
-class MyMatrixGraph:public MyGraph<VertexType,EdgeType>{
+class MyMatrixUnDirectedGraph:public MyGraph<VertexType,EdgeType>{
 public:
 	//构造析构
-	MyMatrixGraph(int size=DefaultVertices);
-	~MyMatrixGraph();
+	MyMatrixUnDirectedGraph(int size=DefaultVertices);
+	~MyMatrixUnDirectedGraph();
 
 	//基类纯虚函数实例化
 	int getVertexPos(VertexType vertex){    //结点的位置以它在表中的下标序号决定
@@ -36,7 +36,7 @@ private:
 
 //构造函数
 template<typename VertexType,typename EdgeType>
-MyMatrixGraph<VertexType,EdgeType>::MyMatrixGraph(int size){
+MyMatrixUnDirectedGraph<VertexType,EdgeType>::MyMatrixUnDirectedGraph(int size){
 	numVertices = 0;
 	numEdges = 0;
 	maxVertices = size;
@@ -56,7 +56,7 @@ MyMatrixGraph<VertexType,EdgeType>::MyMatrixGraph(int size){
 
 //析构函数
 template<typename VertexType,typename EdgeType>
-MyMatrixGraph<VertexType,EdgeType>::~MyMatrixGraph(){
+MyMatrixUnDirectedGraph<VertexType,EdgeType>::~MyMatrixUnDirectedGraph(){
 	//释放结点矩阵空间
 	delete[] VerticesList;
 	//释放边矩阵空间
@@ -67,19 +67,19 @@ MyMatrixGraph<VertexType,EdgeType>::~MyMatrixGraph(){
 
 //获取结点值
 template<typename VertexType,typename EdgeType>
-VertexType MyMatrixGraph<VertexType,EdgeType>::getValue(int i){
+VertexType MyMatrixUnDirectedGraph<VertexType,EdgeType>::getValue(int i){
 	return (i>=0 && i<numVertices)?VerticesList[i]:0;
 }
 
 //获取边的权值
 template<typename VertexType,typename EdgeType>
-EdgeType MyMatrixGraph<VertexType,EdgeType>::getWeight(int v1,int v2){
+EdgeType MyMatrixUnDirectedGraph<VertexType,EdgeType>::getWeight(int v1,int v2){
 	return (v1!=-1 && v2!=-1)?Edge[v1][v2]:0;
 }
 
 //插入结点
 template<typename VertexType,typename EdgeType>
-bool MyMatrixGraph<VertexType,EdgeType>::insertVertex(const VertexType& vertex){
+bool MyMatrixUnDirectedGraph<VertexType,EdgeType>::insertVertex(const VertexType& vertex){
 	if(numVertices == maxVertices)
 		return false;
 	VerticesList[numVertices++] = vertex;
@@ -88,10 +88,11 @@ bool MyMatrixGraph<VertexType,EdgeType>::insertVertex(const VertexType& vertex){
 
 //插入边
 template<typename VertexType,typename EdgeType>
-bool MyMatrixGraph<VertexType,EdgeType>::inertEdge(int v1,int v2,EdgeType cost){
+bool MyMatrixUnDirectedGraph<VertexType,EdgeType>::inertEdge(int v1,int v2,EdgeType cost){
 	if(v1>-1 && v1<numVertices && v2>-1 && v2<numVertices){
 		if(Edge[v1][v2] < 0){
 			Edge[v1][v2] = cost;
+			Edge[v2][v1] = cost;
 			numEdges++;
 			return true;
 		}else{
@@ -104,7 +105,7 @@ bool MyMatrixGraph<VertexType,EdgeType>::inertEdge(int v1,int v2,EdgeType cost){
 
 //删除结点
 template<typename VertexType,typename EdgeType>
-bool MyMatrixGraph<VertexType,EdgeType>::removeVertex(int v){
+bool MyMatrixUnDirectedGraph<VertexType,EdgeType>::removeVertex(int v){
 	//判断输入是否合理
 	if(numVertices==1 || v<0 || v>=numVertices)
 		return false;
@@ -118,9 +119,7 @@ bool MyMatrixGraph<VertexType,EdgeType>::removeVertex(int v){
 		}
 		Edge[i][v] = Edge[i][numVertices];
 		Edge[i][numVertices] = -1;
-		if(Edge[v][i] >= 0){
-			numEdges--;
-		}
+		
 		Edge[v][i] = Edge[numVertices][i];
 		Edge[numVertices][i] = -1;
 	}
@@ -129,9 +128,10 @@ bool MyMatrixGraph<VertexType,EdgeType>::removeVertex(int v){
 
 //删除边
 template<typename VertexType,typename EdgeType>
-bool MyMatrixGraph<VertexType,EdgeType>::removeEdge(int v1,int v2){
+bool MyMatrixUnDirectedGraph<VertexType,EdgeType>::removeEdge(int v1,int v2){
 	if(v1>-1 && v1<numVertices && v2>-1 &&v2<numVertices && Edge[v1][v2]>=0){
 		Edge[v1][v2] = -1;
+		Edge[v2][v1] = -1;
 		numEdges--;
 		return true;
 	}else{
@@ -142,7 +142,7 @@ bool MyMatrixGraph<VertexType,EdgeType>::removeEdge(int v1,int v2){
 
 //图输入
 template<typename VertexType,typename EdgeType>
-void MyMatrixGraph<VertexType,EdgeType>::inputGraph(){
+void MyMatrixUnDirectedGraph<VertexType,EdgeType>::inputGraph(){
 	int num_Vertices; // 结点数
 	int num_Edges;    //边数
 	cout<<"请依次输入结点数和边树："<<endl;
@@ -175,7 +175,7 @@ void MyMatrixGraph<VertexType,EdgeType>::inputGraph(){
 
 //图输出
 template<typename VertexType,typename EdgeType>
-void MyMatrixGraph<VertexType,EdgeType>::outputGraph(){
+void MyMatrixUnDirectedGraph<VertexType,EdgeType>::outputGraph(){
 	int num_Vertices = this->NumofVertices(); // 结点数
 	int num_Edges = this->NumofEdges();    //边数
 	cout<<"该图的结点数目为："<<num_Vertices<<" "<<"边的数目为："<<num_Edges<<endl;
@@ -190,7 +190,7 @@ void MyMatrixGraph<VertexType,EdgeType>::outputGraph(){
 	int weight;
 	VertexType v1,v2;
 	for(int i=0;i<num_Vertices;i++){
-		for(int j=0;j<num_Vertices;j++){   //因为一条边只输出一次，所以用这种方法
+		for(int j=i;j<num_Vertices;j++){   //因为一条边只输出一次，所以用这种方法
 			weight = this->getWeight(i,j);
 			if(weight >= 0){
 				v1 = this->getValue(i);
