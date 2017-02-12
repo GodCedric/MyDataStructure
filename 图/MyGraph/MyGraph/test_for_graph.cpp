@@ -31,7 +31,7 @@ int main(){
     cout<<"删除点：";  
     cin>>ch1;  
     g.removeVertex(g.getVertexPos(ch1));  
-    g.outputGraph();*/ 
+    g.outputGraph(); 
 
 	//基本图算法验证
 	const int m = 8;
@@ -72,7 +72,7 @@ int main(){
 	g2.outputGraph();
 	//深度优先搜索
 	cout<<"深度优先搜索"<<endl;
-	g2.DFS();
+	g2.DFS();*/
 
 	
 	//////基于邻接链表的有向图
@@ -81,8 +81,9 @@ int main(){
 	cout<<"基于邻接链表的有向图:"<<endl;
 	MyLinkDirectedGraph<char,int> g3(30);
 	const int m3 = 6;
+	char vertexs3[m3] = {'u','v','w','x','y','z'};
 	for(int i=0;i<m3;i++){
-		g3.insertVertex(vertexs2[i]);
+		g3.insertVertex(vertexs3[i]);
 	}
 	g3.inertEdge(0,1,1);
 	g3.inertEdge(0,3,1);
@@ -93,6 +94,11 @@ int main(){
 	g3.inertEdge(2,5,1);
 	g3.inertEdge(5,5,1);
 	g3.outputGraph();
+	//cout<<"深度优先搜索"<<endl;
+	//g3.DFS();
+	cout<<"拓扑排序"<<endl;
+	cout<<endl;
+	g3.topological_sort();
 
 
 

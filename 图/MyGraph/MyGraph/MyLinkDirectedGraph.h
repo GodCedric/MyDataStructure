@@ -34,13 +34,14 @@ public:
 	//成员函数
 	void BFS(VertexType sv);    //广度优先搜索
 	void DFS();                 //深度优先搜索
+	void topological_sort();    //拓扑排序
 	void inputGraph();
 	void outputGraph();
 	
 private:
 	Vertex<VertexType,EdgeType>* NodeTable;   //结点表 
 
-	void DFS_visit(Vertex<typename VertexType,typename EdgeType>& u);    //深度优先搜索辅助函数
+	void DFS_visit(Vertex<typename VertexType,typename EdgeType>& u,int& time);    //深度优先搜索辅助函数
 };
 
 //构造函数
@@ -284,7 +285,18 @@ void MyLinkDirectedGraph<VertexType,EdgeType>::outputGraph(){
 //图的广度优先搜索
 template<typename VertexType,typename EdgeType> 
 void MyLinkDirectedGraph<VertexType,EdgeType>::BFS(VertexType sv){
+	int num_Vertices = this->NumofVertices(); // 结点数
+	//初始化
+	for(int i=0;i<num_Vertices;i++){
+		NodeTable[i].color = WHITE;
+		NodeTable[i].d = INT_MAX;
+		NodeTable[i].pi = NULL; 
+	}
 	int x = getVertexPos(sv);
+	if(x == -1){
+		cout<<"输入有误"<<endl;
+		return;
+	}
 	Vertex<typename VertexType,typename EdgeType>& s = NodeTable[x];
 	s.color = GRAY;
 	s.d = 0;
@@ -312,8 +324,7 @@ void MyLinkDirectedGraph<VertexType,EdgeType>::BFS(VertexType sv){
 
 //图的深度优先搜索
 template<typename VertexType,typename EdgeType> 
-void MyLinkDirectedGraph<VertexType,EdgeType>::DFS_visit(Vertex<typename VertexType,typename EdgeType>& u){
-	static int time = 0;
+void MyLinkDirectedGraph<VertexType,EdgeType>::DFS_visit(Vertex<typename VertexType,typename EdgeType>& u,int& time){
 	time = time + 1;
 	u.d = time;
 	u.color = GRAY;
@@ -322,7 +333,7 @@ void MyLinkDirectedGraph<VertexType,EdgeType>::DFS_visit(Vertex<typename VertexT
 		Vertex<typename VertexType,typename EdgeType>& v = NodeTable[uadj->dest];
 		if(v.color == WHITE){
 			v.pi = &u;
-			DFS_visit(v);
+			DFS_visit(v,time);
 		}
 		uadj = uadj->link;
 	}
@@ -335,12 +346,52 @@ void MyLinkDirectedGraph<VertexType,EdgeType>::DFS_visit(Vertex<typename VertexT
 
 template<typename VertexType,typename EdgeType> 
 void MyLinkDirectedGraph<VertexType,EdgeType>::DFS(){
-	int num_Vertices = this->NumofVertices();
+	//初始化
+	int time = 0;
+	int num_Vertices = this->NumofVertices(); // 结点数
+	for(int i=0;i<num_Vertices;i++){
+		NodeTable[i].color = WHITE;
+		NodeTable[i].pi = NULL; 
+	}
 	for(int i=0;i<num_Vertices;i++){
 		Vertex<typename VertexType,typename EdgeType>& u = NodeTable[i];
 		if(u.color == WHITE)
-			DFS_visit(u);
+			DFS_visit(u,time);
 	}
+}
+
+//拓扑排序
+template<typename VertexType,typename EdgeType> 
+void MyLinkDirectedGraph<VertexType,EdgeType>::topological_sort(){
+	//首先深度搜索
+	this->DFS();
+	//根据结束时间倒序输出
+	cout<<endl;
+	cout<<"拓扑排序结果"<<endl;
+	int num_Vertices = this->NumofVertices(); // 结点数
+	vector<int> res1(num_Vertices);
+	vector<VertexType> res2(num_Vertices);
+	for(int i=0;i<num_Vertices;i++){
+		res1[i] = NodeTable[i].f;
+		res2[i] = NodeTable[i].data;
+	}
+	//倒序输出
+	for(int i=0;i<num_Vertices;i++){	
+		int max = -1;
+		int index;
+		for(int j=0;j<num_Vertices;j++){
+			if(res1[j] > max){
+				max = res1[j];
+				index = j;
+			}
+		}
+		if(i<num_Vertices-1)
+			cout<<res2[index]<<"->";
+		else
+			cout<<res2[index];
+		res1[index] = INT_MIN;
+	}
+	cout<<endl;
 }
 
 #endif
