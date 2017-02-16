@@ -23,12 +23,14 @@ struct Vertex{
 	Color color;//颜色
 	int d;//路径长(其实时间)
 	int f;
+	int i;
 	Vertex* pi;//结点前驱
 
 	Edge<VertexType,EdgeType> *adj; //链表头指针
 
 	Vertex():color(WHITE),d(INT_MAX),f(0),pi(NULL),adj(NULL){}
 };
+
 
 
 #endif

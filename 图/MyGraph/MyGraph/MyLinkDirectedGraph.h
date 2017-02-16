@@ -5,6 +5,7 @@
 #include"MyGraph.h"
 #include"VertexandEdge.h"
 #include<queue>
+#include<list>
 
 
 //邻接链表表示的图
@@ -28,13 +29,14 @@ public:
 	//int getFirstNeighbor(int v);          //取结点v的第一个邻接点
 	//int getNextNeighbor(int v,int w);     //取邻接结点w的下一个邻接结点
 	bool insertVertex(const VertexType& vertex);   //插入结点
-	bool inertEdge(int v1,int v2,EdgeType cost);   //插入边
+	bool insertEdge(int v1,int v2,EdgeType cost);   //插入边
 	bool removeVertex(int v);             //删除结点
 	bool removeEdge(int v1,int v2);       //删除边(v1,v2)
 	//成员函数
 	void BFS(VertexType sv);    //广度优先搜索
 	void DFS();                 //深度优先搜索
 	void topological_sort();    //拓扑排序
+	void Kosaraju();            //Kosaraju算法求解强连通分量
 	void inputGraph();
 	void outputGraph();
 	
@@ -42,6 +44,10 @@ private:
 	Vertex<VertexType,EdgeType>* NodeTable;   //结点表 
 
 	void DFS_visit(Vertex<typename VertexType,typename EdgeType>& u,int& time);    //深度优先搜索辅助函数
+	MyLinkDirectedGraph<VertexType,EdgeType>* reverse_graph();     //求解图的转置
+	void reverseindex(int num_Vertices,int num_Edges,vector<int>& finishtime,vector<int>& sortindex);   //求结束时间的逆序
+	void KosarajuDFS(MyLinkDirectedGraph<VertexType,EdgeType>* GT,vector<int>& newold,list<list<VertexType>>& SCC);  //求强连通分量
+	void KosarajuDFSvisit(int j,list<VertexType>& single_SCC,vector<Color> color);
 };
 
 //构造函数
@@ -128,13 +134,14 @@ bool MyLinkDirectedGraph<VertexType,EdgeType>::insertVertex(const VertexType& ve
 	if(numVertices == maxVertices)
 		return false;
 	NodeTable[numVertices].data = vertex;
+	NodeTable[numVertices].i = numVertices;
 	numVertices++;
 	return true;
 }
 
 //插入边
 template<typename VertexType,typename EdgeType> 
-bool MyLinkDirectedGraph<VertexType,EdgeType>::inertEdge(int v1,int v2,EdgeType weight){
+bool MyLinkDirectedGraph<VertexType,EdgeType>::insertEdge(int v1,int v2,EdgeType weight){
 	//要求输入的v1和v2合理
 	if(v1>=0 && v1<numVertices && v2>=0 && v2<numVertices){
 		//查找这个边是不是已经存在了，如果存在，则返回插入失败
@@ -249,7 +256,7 @@ void MyLinkDirectedGraph<VertexType,EdgeType>::inputGraph(){
 			cout<<"输入不符合要求，请检查两结点是否均存在"<<endl;
 			break;
 		}else{
-			if(this->inertEdge(m,n,weight)){
+			if(this->insertEdge(m,n,weight)){
 				j++;
 			}
 		}
@@ -392,6 +399,130 @@ void MyLinkDirectedGraph<VertexType,EdgeType>::topological_sort(){
 		res1[index] = INT_MIN;
 	}
 	cout<<endl;
+}
+
+
+//Kosaraju算法求解强连通分量
+template<typename VertexType,typename EdgeType> 
+void MyLinkDirectedGraph<VertexType,EdgeType>::Kosaraju(){
+	//第一步先DFS
+	this->DFS();
+	//求结束时间的倒序
+	int num_Vertices = this->NumofVertices();
+	int num_Edges = this->NumofEdges();
+	vector<int> finishtime(num_Vertices);
+	vector<int> sortindex(num_Vertices);
+	reverseindex(num_Vertices,num_Edges,finishtime,sortindex);
+	//求转置图
+	MyLinkDirectedGraph<VertexType,EdgeType>* GT = reverse_graph();
+	GT->outputGraph();
+	//倒序访问GT
+	list<list<VertexType>> SCC;   //二维链表存储强连通分量
+	KosarajuDFS(GT,sortindex,SCC);
+
+	delete GT;  //注意释放空间
+}
+
+template<typename VertexType,typename EdgeType> 
+void MyLinkDirectedGraph<VertexType,EdgeType>::reverseindex(int num_Vertices,int num_Edges,vector<int>& finishtime,vector<int>& sortindex){
+	for(int i=0;i<num_Vertices;i++){
+		finishtime[i] = NodeTable[i].f;
+	}
+	vector<int> finishtime2 = finishtime;
+	for(int i=0;i<num_Vertices;i++){
+		int max = -1;
+		int index;
+		for(int j=0;j<num_Vertices;j++){
+			if(finishtime2[j] > max){
+				max = finishtime2[j];
+				index = j;
+			}
+		}
+		sortindex[i] = index;
+		finishtime2[index] = -1;
+	}
+}
+
+template<typename VertexType,typename EdgeType> 
+MyLinkDirectedGraph<VertexType,EdgeType>* MyLinkDirectedGraph<VertexType,EdgeType>::reverse_graph(){
+	MyLinkDirectedGraph<VertexType,EdgeType>* GT = new MyLinkDirectedGraph<VertexType,EdgeType>();
+	//std::shared_ptr<MyLinkDirectedGraph<VertexType,EdgeType>> GT(new MyLinkDirectedGraph<VertexType,EdgeType>());
+	for(int i=0;i<NumofVertices();i++){
+		//插入结点
+		GT->insertVertex(getValue(i));
+	}
+	for(int i=0;i<NumofVertices();i++){
+		//反向插入边
+		Edge<VertexType,EdgeType> *p = NodeTable[i].adj;//取出结点对应的边链表的头指针
+		while(p){
+			GT->insertEdge(p->dest,i,p->cost);
+			p = p->link;
+		}	
+	}
+	return GT;
+}
+
+//求强连通分量
+template<typename VertexType,typename EdgeType>
+void MyLinkDirectedGraph<VertexType,EdgeType>::KosarajuDFS(MyLinkDirectedGraph<VertexType,EdgeType>* GT,vector<int>& newold,list<list<VertexType>>& SCC){
+	int n = NumofVertices();
+	vector<Color> color(n,WHITE);
+	//循环迭代，顺序为结束时间逆序
+	for(int i=0;i<n;i++){
+		int j = newold[i];     //第i次访问第newold[i]个结点
+		if(color[j] != WHITE)
+			continue;
+		//创建一个联通区域
+		list<VertexType> single_SCC;
+		//递归搜索
+		KosarajuDFSvisit(j,single_SCC,color);
+		SCC.push_back(single_SCC);
+	}
+}
+
+template<typename VertexType,typename EdgeType>
+void MyLinkDirectedGraph<VertexType,EdgeType>::KosarajuDFSvisit(int j,list<VertexType>& single_SCC,vector<Color> color){
+	color[j] = GRAY;
+	single_SCC.push_back(NodeTable[j].data);
+	int cnt = 0;
+	Edge<typename VertexType,typename EdgeType>* uadj = NodeTable[j].adj;
+	while(uadj!=NULL){
+		Vertex<typename VertexType,typename EdgeType>& v = NodeTable[uadj->dest];
+		if(v.color == WHITE){
+			cnt++;
+		}
+		uadj = uadj->link;
+	}
+	if(cnt == 0)
+		return;
+	vector<Vertex<typename VertexType,typename EdgeType>> e(cnt);
+	uadj = NodeTable[j].adj;
+	cnt = 0;
+	while(uadj!=NULL){
+		Vertex<typename VertexType,typename EdgeType>& v = NodeTable[uadj->dest];
+		if(v.color == WHITE){
+			e[cnt++] = v;
+		}
+		uadj = uadj->link;
+	}
+	
+	int maxidx;
+	for(int i=0;i<e.size();i++){
+		maxidx = i;
+		for(int k = i+1;k<e.size();j++){
+			if(e[k].f > e[maxidx].f){
+				maxidx = k;
+			}
+		}
+		if(maxidx != i){
+			swap(e[i],e[maxidx]);
+		}
+	}
+
+	for(int k=0;k<e.size();k++){
+		int j = e[k].i;
+		KosarajuDFSvisit(j,single_SCC,color);
+	}
 }
 
 #endif

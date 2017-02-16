@@ -27,7 +27,7 @@ public:
 	//int getFirstNeighbor(int v);          //取结点v的第一个邻接点
 	//int getNextNeighbor(int v,int w);     //取邻接结点w的下一个邻接结点
 	bool insertVertex(const VertexType& vertex);   //插入结点
-	bool inertEdge(int v1,int v2,EdgeType cost);   //插入边
+	bool insertEdge(int v1,int v2,EdgeType cost);   //插入边
 	bool removeVertex(int v);             //删除结点
 	bool removeEdge(int v1,int v2);       //删除边(v1,v2)
 	//成员函数
@@ -132,7 +132,7 @@ bool MyLinkUnDirectedGraph<VertexType,EdgeType>::insertVertex(const VertexType& 
 
 //插入边
 template<typename VertexType,typename EdgeType> 
-bool MyLinkUnDirectedGraph<VertexType,EdgeType>::inertEdge(int v1,int v2,EdgeType weight){
+bool MyLinkUnDirectedGraph<VertexType,EdgeType>::insertEdge(int v1,int v2,EdgeType weight){
 	//要求输入的v1和v2合理
 	if(v1>=0 && v1<numVertices && v2>=0 && v2<numVertices){
 		//查找这个边是不是已经存在了，如果存在，则返回插入失败
@@ -286,7 +286,7 @@ void MyLinkUnDirectedGraph<VertexType,EdgeType>::inputGraph(){
 			cout<<"输入不符合要求，请检查两结点是否均存在"<<endl;
 			break;
 		}else{
-			if(this->inertEdge(m,n,weight)){
+			if(this->insertEdge(m,n,weight)){
 				j++;
 			}
 		}

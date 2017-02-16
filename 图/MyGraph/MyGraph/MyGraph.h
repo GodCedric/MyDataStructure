@@ -32,7 +32,7 @@ public:
 	//virtual int getFirstNeighbor(int v)=0;          //取结点v的第一个邻接点
 	//virtual int getNextNeighbor(int v,int w)=0;     //取邻接结点w的下一个邻接结点
 	virtual bool insertVertex(const VertexType& vertex)=0;   //插入结点
-	virtual bool inertEdge(int v1,int v2,EdgeType cost)=0;   //插入边
+	virtual bool insertEdge(int v1,int v2,EdgeType cost)=0;   //插入边
 	virtual bool removeVertex(int v)=0;             //删除结点
 	virtual bool removeEdge(int v1,int v2)=0;       //删除边(v1,v2)
 	

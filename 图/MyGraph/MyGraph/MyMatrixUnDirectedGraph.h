@@ -23,7 +23,7 @@ public:
 	VertexType getValue(int i);            //获取结点值
 	EdgeType getWeight(int v1,int v2);  // 获取边的权重
 	bool insertVertex(const VertexType& vertex);   //插入结点
-	bool inertEdge(int v1,int v2,EdgeType cost);   //插入边
+	bool insertEdge(int v1,int v2,EdgeType cost);   //插入边
 	bool removeVertex(int v);             //删除结点
 	bool removeEdge(int v1,int v2);       //删除边(v1,v2)
 	//成员函数
@@ -88,7 +88,7 @@ bool MyMatrixUnDirectedGraph<VertexType,EdgeType>::insertVertex(const VertexType
 
 //插入边
 template<typename VertexType,typename EdgeType>
-bool MyMatrixUnDirectedGraph<VertexType,EdgeType>::inertEdge(int v1,int v2,EdgeType cost){
+bool MyMatrixUnDirectedGraph<VertexType,EdgeType>::insertEdge(int v1,int v2,EdgeType cost){
 	if(v1>-1 && v1<numVertices && v2>-1 && v2<numVertices){
 		if(Edge[v1][v2] < 0){
 			Edge[v1][v2] = cost;
@@ -166,7 +166,7 @@ void MyMatrixUnDirectedGraph<VertexType,EdgeType>::inputGraph(){
 			cout<<"输入不符合要求，请检查两结点是否均存在"<<endl;
 			break;
 		}else{
-			if(this->inertEdge(m,n,weight)){
+			if(this->insertEdge(m,n,weight)){
 				j++;
 			}
 		}

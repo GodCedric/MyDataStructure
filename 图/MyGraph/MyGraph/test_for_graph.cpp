@@ -22,7 +22,7 @@ int main(){
     g.insertVertex(ch1);  //插入点  
     cout<<"插入边："<<endl;  
     cin >>ch1>>ch2>>weight;  
-	g.inertEdge(g.getVertexPos(ch1),g.getVertexPos(ch2),weight);//插入边
+	g.insertEdge(g.getVertexPos(ch1),g.getVertexPos(ch2),weight);//插入边
 	g.outputGraph();
 	cout<<"删除边：";  
     cin >>ch1>>ch2;  
@@ -39,16 +39,16 @@ int main(){
 	for(int i=0;i<m;i++){
 		g.insertVertex(vertexs[i]);
 	}
-	g.inertEdge(0,1,1);
-	g.inertEdge(0,4,1);
-	g.inertEdge(1,5,1);
-	g.inertEdge(5,2,1);
-	g.inertEdge(5,6,1);
-	g.inertEdge(2,6,1);
-	g.inertEdge(2,3,1);
-	g.inertEdge(3,6,1);
-	g.inertEdge(6,7,1);
-	g.inertEdge(3,7,1);
+	g.insertEdge(0,1,1);
+	g.insertEdge(0,4,1);
+	g.insertEdge(1,5,1);
+	g.insertEdge(5,2,1);
+	g.insertEdge(5,6,1);
+	g.insertEdge(2,6,1);
+	g.insertEdge(2,3,1);
+	g.insertEdge(3,6,1);
+	g.insertEdge(6,7,1);
+	g.insertEdge(3,7,1);
 	g.outputGraph();
 	//广度优先搜索
 	cout<<"广度优先搜索"<<endl;
@@ -61,14 +61,14 @@ int main(){
 	for(int i=0;i<m2;i++){
 		g2.insertVertex(vertexs2[i]);
 	}
-	g2.inertEdge(0,1,1);
-	g2.inertEdge(0,3,1);
-	g2.inertEdge(3,1,1);
-	g2.inertEdge(4,3,1);
-	g2.inertEdge(1,4,1);
-	g2.inertEdge(2,4,1);
-	g2.inertEdge(2,5,1);
-	g2.inertEdge(5,5,1);
+	g2.insertEdge(0,1,1);
+	g2.insertEdge(0,3,1);
+	g2.insertEdge(3,1,1);
+	g2.insertEdge(4,3,1);
+	g2.insertEdge(1,4,1);
+	g2.insertEdge(2,4,1);
+	g2.insertEdge(2,5,1);
+	g2.insertEdge(5,5,1);
 	g2.outputGraph();
 	//深度优先搜索
 	cout<<"深度优先搜索"<<endl;
@@ -77,7 +77,6 @@ int main(){
 	
 	//////基于邻接链表的有向图
 	cout<<endl;
-	cout<<endl;
 	cout<<"基于邻接链表的有向图:"<<endl;
 	MyLinkDirectedGraph<char,int> g3(30);
 	const int m3 = 6;
@@ -85,20 +84,20 @@ int main(){
 	for(int i=0;i<m3;i++){
 		g3.insertVertex(vertexs3[i]);
 	}
-	g3.inertEdge(0,1,1);
-	g3.inertEdge(0,3,1);
-	g3.inertEdge(3,1,1);
-	g3.inertEdge(4,3,1);
-	g3.inertEdge(1,4,1);
-	g3.inertEdge(2,4,1);
-	g3.inertEdge(2,5,1);
-	g3.inertEdge(5,5,1);
+	g3.insertEdge(0,1,1);
+	g3.insertEdge(0,3,1);
+	g3.insertEdge(3,1,1);
+	g3.insertEdge(4,3,1);
+	g3.insertEdge(1,4,1);
+	g3.insertEdge(2,4,1);
+	g3.insertEdge(2,5,1);
+	g3.insertEdge(5,5,1);
 	g3.outputGraph();
 	//cout<<"深度优先搜索"<<endl;
 	//g3.DFS();
-	cout<<"拓扑排序"<<endl;
 	cout<<endl;
 	g3.topological_sort();
+	g3.Kosaraju();
 
 
 
@@ -113,7 +112,7 @@ int main(){
     r.insertVertex(ch3);  //插入点  
     cout<<"插入边："<<endl;  
     cin >>ch3>>ch4>>weight2;  
-	r.inertEdge(r.getVertexPos(ch3),r.getVertexPos(ch4),weight2);//插入边
+	r.insertEdge(r.getVertexPos(ch3),r.getVertexPos(ch4),weight2);//插入边
 	r.outputGraph();
 	cout<<"删除边：";  
     cin >>ch3>>ch4;  
@@ -135,7 +134,7 @@ int main(){
     r.insertVertex(ch3);  //插入点  
     cout<<"插入边："<<endl;  
     cin >>ch3>>ch4>>weight2;  
-	r.inertEdge(r.getVertexPos(ch3),r.getVertexPos(ch4),weight2);//插入边
+	r.insertEdge(r.getVertexPos(ch3),r.getVertexPos(ch4),weight2);//插入边
 	r.outputGraph();
 	cout<<"删除边：";  
     cin >>ch3>>ch4;  
